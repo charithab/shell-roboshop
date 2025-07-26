@@ -9,7 +9,6 @@ DOMAIN_NAME="charitha.site"
 #for instance in ${INSTANCES[@]}
 for instance in $@
 do 
-
     INSTANCE_ID=$(aws ec2 run-instances --image-id ami-09c813fb71547fc4f --instance-type t2.micro --security-group-ids sg-0d6712338af2d6d1e --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$instance}]" --query 'Instances[0].InstanceId' --output text)
     if [ $instance != "frontend" ]
     then
