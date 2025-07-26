@@ -23,7 +23,7 @@ else
     echo "You are running with root access" | tee -a $LOG_FILE
 fi
 
-echo "Please enter mysqlrabbitmq password"
+echo "Please enter rabbitmq password"
 read -s RABBITMQ_PASSWORD
 
 VALIDATE() {
