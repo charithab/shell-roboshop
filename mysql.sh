@@ -16,7 +16,7 @@ echo "Script started executing at: $(date)" | tee -a $LOG_FILE
 # check the user has root priveleges or not
 if [ $USERID -ne 0 ]
 then
-    echo "$R ERROR: Please run this script with root access $N" | tee -a $LOG_FILE
+    echo -e "$R ERROR: Please run this script with root access $N" | tee -a $LOG_FILE
     exit 1
 else
     echo "You are running with root access" | tee -a $LOG_FILE
@@ -28,23 +28,23 @@ read -s MYSQL_PASSWORD
 VALIDATE() {
     if [ $1 -eq 0 ]
     then
-        echo "$2 is... $G SUCCESS $N" | tee -a $LOG_FILE
+        echo -e "$2 is... $G SUCCESS $N" | tee -a $LOG_FILE
     else
-        echo "$2 is... $R FAILURE $N" | tee -a $LOG_FILE
+        echo -e "$2 is... $R FAILURE $N" | tee -a $LOG_FILE
         exit 1
     fi
 }
 
-dnf install mysql-server -y
+dnf install mysql-server -y &>>$LOG_FILE
 VALIDATE $? "Installing Mysql server"
 
-systemctl enable mysqld
+systemctl enable mysqld &>>$LOG_FILE
 VALIDATE $? "Enabling Mysql service"
 
-systemctl start mysqld 
+systemctl start mysqld  &>>$LOG_FILE
 VALIDATE $? "Starting Mysql server" 
 
-mysql_secure_installation --set-root-pass $MYSQL_PASSWORD
+mysql_secure_installation --set-root-pass $MYSQL_PASSWORD &>>$LOG_FILE
 VALIDATE $? "Setting Root Password"
 
 
