@@ -78,5 +78,11 @@ VALIDATE $? "mongo.repo creating"
 dnf install mongodb-mongosh -y  &>>$LOG_FILE
 VALIDATE $? "Installing mongosh client"
 
-mongosh --host mongodb.charitha.site </app/db/master-data.js  &>>$LOG_FILE
-VALIDATE $? "Mongodb Data loading"
+STATUS=$(mongosh --host mongodb.daws84s.site --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
+if [ $STATUS -lt 0 ]
+then
+    mongosh --host mongodb.charitha.site </app/db/master-data.js  &>>$LOG_FILE
+    VALIDATE $? "Mongodb Data loading"
+else
+    echo -e "Data is already loaded.... $Y SKIPPING $N"
+fi
